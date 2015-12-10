@@ -4,62 +4,72 @@ import (
 	"fmt"
 )
 
-var deliveries = 1
-
 type location struct {
 	x int
 	y int
 }
 
+var x = int(0)
+var y = int(0)
+
+var robotx = int(0)
+var roboty = int(0)
+
+var santax = int(0)
+var santay = int(0)
+
 var homes = make([]location, 0)
 
 func main() {
-
+	// Start at the first location.
 	homes = append(homes, location{0, 0})
 	length := len(directions)
 
-	// Sx := int(0)
-	// Sy := int(0)
-	//
-	// Rx := int(0)
-	// Ry := int(0)
-
-	x := int(0)
-	y := int(0)
-
+	// Let's loop through the string.
+	// Make the moves and append the homes.
 	for i := 0; i < length; i++ {
+		// Set x and y based on who is moving this round.
+		var home location
 		move := string(directions[i])
-		switch move {
-		case "^":
-			y++
-			fmt.Println("Going up.")
-		case "v":
-			y--
-			fmt.Println("Going down.")
-		case "<":
-			x--
-			fmt.Println("Going left.")
-		case ">":
-			x++
-			fmt.Println("Going right.")
-		}
-		homes = append(homes, location{x, y})
+		home, x, y = makeTheMove(x, y, move)
+		homes = append(homes, home)
+		// Save x and y based on who was moving this round.
 	}
 
-	var uniqueHomes []location
+	// Now let's range through all the homes and
+	// only add unique homes to uniqueHomes.
+	uniqueHomes := makeUniqeHomes(homes)
 
+	// Once the duplicates are removed.
+	numHomes := len(uniqueHomes)
+	fmt.Printf("Number of homes: %d\n", numHomes)
+}
+
+func makeUniqeHomes(homes []location) []location {
+	var uniqueHomes []location
 	for _, home := range homes {
 		present := homeInSlice(home, uniqueHomes)
 		if present {
-			fmt.Printf("Y")
+			// Don't do anything - it's already there.
 		} else {
-			fmt.Printf("N")
 			uniqueHomes = append(uniqueHomes, home)
 		}
 	}
-	// Once the duplicates are removed.
-	numHomes := len(uniqueHomes)
-	fmt.Printf("Number of homes: %d", numHomes)
+	return uniqueHomes
+}
+
+func makeTheMove(x int, y int, move string) (location, int, int) {
+	switch move {
+	case "^":
+		y++
+	case "v":
+		y--
+	case "<":
+		x--
+	case ">":
+		x++
+	}
+	return location{x, y}, x, y
 }
 
 func homeInSlice(home location, cleaned []location) bool {
