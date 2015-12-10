@@ -29,11 +29,17 @@ func main() {
 	// Make the moves and append the homes.
 	for i := 0; i < length; i++ {
 		// Set x and y based on who is moving this round.
+		who := whoIsDelivering(i)
+		x, y = setCurrentLocation(who)
+
+		// Make the move and add the home.
 		var home location
 		move := string(directions[i])
 		home, x, y = makeTheMove(x, y, move)
 		homes = append(homes, home)
+
 		// Save x and y based on who was moving this round.
+		saveCurrentLocation(x, y, who)
 	}
 
 	// Now let's range through all the homes and
@@ -43,6 +49,35 @@ func main() {
 	// Once the duplicates are removed.
 	numHomes := len(uniqueHomes)
 	fmt.Printf("Number of homes: %d\n", numHomes)
+}
+
+func saveCurrentLocation(x int, y int, name string) {
+	if name == "santa" {
+		santax = x
+		santay = y
+	} else if name == "robot" {
+		robotx = x
+		roboty = y
+	}
+}
+
+func setCurrentLocation(name string) (int, int) {
+	if name == "santa" {
+		return santax, santay
+	}
+	// If not - then it's the robot.
+	return robotx, roboty
+}
+
+func whoIsDelivering(round int) string {
+	if round == 0 {
+		return "santa"
+	} else if round == 1 {
+		return "robot"
+	} else if round%2 == 0 {
+		return "santa"
+	}
+	return "robot"
 }
 
 func makeUniqeHomes(homes []location) []location {
