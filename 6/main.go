@@ -44,12 +44,11 @@ func main() {
 func countGrid() {
 	for y := yMin; y <= yMax; y++ {
 		for x := xMin; x <= xMax; x++ {
-			if grid[x][y] == 1 {
-				count++
-			}
+			value := grid[x][y]
+			count += value
 		}
 	}
-	fmt.Printf("%d lights are on", count)
+	fmt.Printf("%d total brightness value", count)
 }
 
 func parseLine(line string) {
@@ -82,7 +81,7 @@ func getCoordinates(line string, first int, second int) (int, int, int, int) {
 func turnOff(line string) {
 	x1, y1, x2, y2 := getCoordinates(line, 2, 4)
 	fmt.Printf("x1: %d, y1: %d, x2: %d, x2: %d\n", x1, y1, x2, y2)
-	set(int(0), x1, y1, x2, y2)
+	set(int(-1), x1, y1, x2, y2)
 }
 
 func turnOn(line string) {
@@ -101,11 +100,8 @@ func flip(x1, y1, x2, y2 int) {
 	for y := y1; y <= y2; y++ {
 		for x := x1; x <= x2; x++ {
 			value := grid[x][y]
-			if value == 0 {
-				grid[x][y] = 1
-			} else {
-				grid[x][y] = 0
-			}
+			value += 2
+			grid[x][y] = value
 			//fmt.Printf("Setting: %d,%d to %d\n", x, y, value)
 		}
 	}
@@ -114,7 +110,20 @@ func flip(x1, y1, x2, y2 int) {
 func set(value, x1, y1, x2, y2 int) {
 	for y := y1; y <= y2; y++ {
 		for x := x1; x <= x2; x++ {
-			grid[x][y] = value
+			if value == 1 {
+				value := grid[x][y]
+				value++
+				grid[x][y] = value
+			}
+			if value == -1 {
+				value := grid[x][y]
+				value--
+				if value >= 0 {
+					grid[x][y] = value
+				} else {
+					grid[x][y] = 0
+				}
+			}
 		}
 	}
 }
