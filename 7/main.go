@@ -10,21 +10,22 @@ var m map[string]int
 
 func main() {
 	m = make(map[string]int)
-
+	counter := int(0)
 	// What we know:
 	// 0 -> c
 	// 14146 -> b
 	m["c"] = 0
-	m["b"] = 956
+	m["b"] = 14146
 
 	inputSlice := strings.Split(input, "\n")
 	for {
 		for _, line := range inputSlice {
 			parseLine(line)
 		}
+		counter++
 		fmt.Printf("\nMap: %+v\n", m)
 		if m["lx"] != 0 {
-			fmt.Printf("Solved for a: %d\n", m["lx"])
+			fmt.Printf("Solved for a: %d in %d loops\n", m["lx"], counter)
 			break
 		}
 	}
