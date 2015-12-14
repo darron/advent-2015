@@ -1,0 +1,24 @@
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	x := 123
+	y := 456
+
+	d := x & y
+	e := x | y
+	f := x << 2
+	g := y >> 2
+	// Not sure WTF about these.
+	h := x ^ 65535
+	i := y ^ 65535
+	fmt.Printf("d: %d\n", d)
+	fmt.Printf("e: %d\n", e)
+	fmt.Printf("f: %d\n", f)
+	fmt.Printf("g: %d\n", g)
+	fmt.Printf("h: %d\n", h)
+	fmt.Printf("i: %d\n", i)
+}
