@@ -15,7 +15,7 @@ func main() {
 	// 0 -> c
 	// 14146 -> b
 	m["c"] = 0
-	m["b"] = 14146
+	m["b"] = 956
 
 	inputSlice := strings.Split(input, "\n")
 	for {
